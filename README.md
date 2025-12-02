@@ -80,8 +80,8 @@ npx expo start
 
 ## 🤝 Mitwirken
 
-Beiträge sind willkommen! Erstelle gerne einen Pull Request.
+Beiträge für Verbesserungen sind willkommen!
 
 ## 📄 Lizenz
 
-Dieses Projekt ist Open-Source und unter der [MIT Lizenz](LICENSE) verfügbar.
+Macht damit was ihr wollt :)
