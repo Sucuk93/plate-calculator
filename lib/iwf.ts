@@ -47,10 +47,27 @@ export const BAR_WEIGHTS = {
   WOMEN: 15,
 };
 
+export const MAX_WEIGHTS = {
+  MEN: 300,
+  WOMEN: 225,
+};
+
 export const COLLAR_WEIGHT_PER_SIDE = 2.5; // 5kg total
 
 export function calculatePlates(targetWeight: number, barType: 'MEN' | 'WOMEN'): CalculationResult {
   const barWeight = barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN;
+  const maxWeight = barType === 'MEN' ? MAX_WEIGHTS.MEN : MAX_WEIGHTS.WOMEN;
+  
+  // Rule 0: Max Weight Check
+  if (targetWeight > maxWeight) {
+    return {
+      plates: [],
+      hasCollars: false,
+      remainder: 0,
+      isValid: false,
+      error: `Maximum weight is ${maxWeight}kg`
+    };
+  }
   
   // Rule 1: Collar Thresholds
   const useCollars = barType === 'MEN' ? targetWeight >= 30 : targetWeight >= 25;

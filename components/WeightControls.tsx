@@ -8,7 +8,7 @@ import {
   ScrollView,
   PanResponder,
 } from 'react-native';
-import { BAR_WEIGHTS } from '@/lib/iwf';
+import { BAR_WEIGHTS, MAX_WEIGHTS } from '@/lib/iwf';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 
@@ -30,27 +30,32 @@ export function WeightControls({
   setIsSwiping,
 }: WeightControlsProps) {
   const minWeight = barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN;
+  const maxWeight = barType === 'MEN' ? MAX_WEIGHTS.MEN : MAX_WEIGHTS.WOMEN;
 
   const handleIncrement = (amount: number) => {
     const newWeight = weight + amount;
-    if (newWeight >= minWeight) {
+    if (newWeight >= minWeight && newWeight <= maxWeight) {
       setWeight(newWeight);
     }
   };
 
   const handleDecrement = (amount: number) => {
     const newWeight = weight - amount;
-    if (newWeight >= minWeight) {
+    if (newWeight >= minWeight && newWeight <= maxWeight) {
       setWeight(newWeight);
     }
   };
 
   const handleBarChange = (type: 'MEN' | 'WOMEN') => {
     setBarType(type);
-    // Adjust weight if it falls below new min
+    // Adjust weight if it falls below new min or above new max
     const newMin = type === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN;
+    const newMax = type === 'MEN' ? MAX_WEIGHTS.MEN : MAX_WEIGHTS.WOMEN;
+
     if (weight < newMin) {
       setWeight(newMin);
+    } else if (weight > newMax) {
+      setWeight(newMax);
     }
   };
 
@@ -61,11 +66,13 @@ export function WeightControls({
   // Refs to hold latest values for PanResponder closure
   const latestWeightRef = useRef(weight);
   const latestMinWeightRef = useRef(minWeight);
+  const latestMaxWeightRef = useRef(maxWeight);
   const latestSetWeightRef = useRef(setWeight);
 
   // Update refs on every render
   latestWeightRef.current = weight;
   latestMinWeightRef.current = minWeight;
+  latestMaxWeightRef.current = maxWeight;
   latestSetWeightRef.current = setWeight;
 
   const panResponder = useRef(
@@ -97,9 +104,11 @@ export function WeightControls({
           let newWeight = startWeightRef.current + deltaKg;
 
           const currentMin = latestMinWeightRef.current;
+          const currentMax = latestMaxWeightRef.current;
 
-          // Enforce min weight
+          // Enforce min/max weight
           if (newWeight < currentMin) newWeight = currentMin;
+          if (newWeight > currentMax) newWeight = currentMax;
 
           // Use the latest setWeight function
           latestSetWeightRef.current(newWeight);
@@ -184,17 +193,23 @@ export function WeightControls({
             className="mx-2 min-w-[140px] items-center justify-center rounded-xl bg-gray-100 py-6 shadow-sm dark:bg-gray-800">
             <TextInput
               value={weight.toString()}
-              // editable={!isSwiping}
-              editable={false}
+              editable={!isSwiping}
               onChangeText={(text) => {
                 const val = parseFloat(text);
-                if (!isNaN(val) && val >= minWeight) {
-                  setWeight(val);
+                if (!isNaN(val)) {
+                  // Clamp value between min and max if typed manually
+                  if (val < minWeight) {
+                    setWeight(val); // Allow intermediate states (e.g. typing "1" before "10")
+                  } else if (val > maxWeight) {
+                    setWeight(maxWeight);
+                  } else {
+                    setWeight(val);
+                  }
                 }
               }}
               keyboardType="numeric"
               className={cn(
-                'w-full cursor-pointer text-center text-5xl font-black text-gray-900 dark:text-white',
+                'w-full text-center text-5xl font-black text-gray-900 dark:text-white',
                 isSwiping && 'opacity-50'
               )}
             />
@@ -206,7 +221,7 @@ export function WeightControls({
           <Button
             variant="outline"
             size="icon"
-            className="flex h-12 w-12 rounded-full border-0 bg-gray-200 dark:bg-gray-800"
+            className="h-12 w-12 rounded-full border-0 bg-gray-200 dark:bg-gray-800"
             onPress={() => handleIncrement(1)}>
             <Text className="pb-1 text-2xl text-gray-600 dark:text-gray-200">+</Text>
           </Button>
@@ -291,7 +306,7 @@ export function WeightControls({
               // Generate some presets based on current weight range
               const start = Math.floor(weight / 10) * 10 - 50;
               const val = (start > minWeight ? start : minWeight) + i * 5;
-              if (val < minWeight) return null;
+              if (val < minWeight || val > maxWeight) return null;
 
               return (
                 <TouchableOpacity

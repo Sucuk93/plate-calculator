@@ -1,73 +1,85 @@
-# Minimal Template
+# Wettkampf Scheiben-Rechner
 
-This is a [React Native](https://reactnative.dev/) project built with [Expo](https://expo.dev/) and [React Native Reusables](https://reactnativereusables.com).
+Jeder kennt das nervige Rechnen, wenn man als Scheibenstecker bei einem Wettkampf hilft.
+Als Erleichterung habe ich einen interaktiver Rechner mit **React Native (Expo)** und **NativeWind** entwickelt. Diese Webapp visualisiert die korrekte Beladung der Hantel für ein gewünschtes Zielgewicht und berücksichtigt dabei die allgemein gültigen Wettkampfregeln, einschließlich der Verwendung von Klemmen und Trainingsscheiben.
 
-It was initialized using the following command:
+![App Vorschau](./assets/images/example-screenshot.png)
+_Linkes Browserfenster für die Einstellung; Rechtes Browserfenster für die Anzeige auf einem externen Monitor_
+
+## ✨ Funktionen
+
+- **Visuelle Hantel-Beladung:** Echtzeit-Visualisierung der Scheiben auf der Hantelaufnahme
+- **Wettkampf- & Trainings-Regeln:**
+  - Unterstützt **Männerhantel (20kg)** und **Frauenhantel (15kg)**.
+  - Automatische **Klemmen-Regelung**: Klemmen (2,5kg pro Stück) werden erst hinzugefügt, wenn das Gewicht 30kg (Männer) bzw. 25kg (Frauen) erreicht.
+  - **Trainingsscheiben**: Intelligente Bevorzugung großer "Trainingsscheiben" (5kg/2,5kg) bei leichteren Gewichten (<45kg(M); <40kg(F)), um die korrekte Hantelhöhe zu gewährleisten.
+  - Korrekte Sortierung der Scheiben und Klemmen
+  - **Gewichtslimits:** Maximales Gewicht begrenzt auf **300kg (Männer)** und **225kg (Frauen)**.
+- **Intuitive Steuerung:**
+  - **Swipe-Anpassung:** Wische horizontal über die Gewichtsanzeige, um das Gewicht in 1kg-Schritten zu ändern (blockiert vertikales Scrollen auf Mobilgeräten für bessere Bedienung).
+  - **Mausrad-Support:** Gewichtsanpassung durch Scrollen am Desktop.
+- **Externes Display 🖥️:**
+  - Öffne eine dedizierte Route `/display` Ansicht für einen zweiten Monitor.
+  - **Echtzeit-Synchronisation:** Änderungen auf dem Hauptbildschirm werden sofort via Broadcast Channel API auf das externe Display übertragen (kein Server notwendig).
+- **Design:** Voll integrierter **Dunkelmodus (Dark Mode)** und optionaler Hellmodus (Beta).
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Expo](https://expo.dev/) (React Native)
+- **Routing:** [Expo Router](https://docs.expo.dev/router/introduction/)
+- **Styling:** [NativeWind](https://www.nativewind.dev/) (Tailwind CSS für React Native)
+- **Icons:** Lucide React Native
+
+Ich wollte diesen Tech Stack gerade testen und habe ihn deswegen bei der Webapp genutzt. Die Auswahl hatte sonst keinen bestimmten Hintergrund gehabt.
+
+## 🚀 Erste Schritte
+
+Folgende Schritte sind notwendig, um die App lokal auf deinem Computer auszuführen.
+
+### Voraussetzungen
+
+- **Node.js** muss installiert sein.
+- **npm** als Paketmanager.
+
+### Installation
+
+1.  **Repository klonen:**
+
+    ```bash
+    git clone https://github.com/Sucuk93/plate-calculator.git
+    cd plate-calculator
+    ```
+
+2.  **Abhängigkeiten installieren:**
+    ```bash
+    npm install
+    ```
+
+### App starten
+
+Starte den Entwicklungsserver:
 
 ```bash
-npx @react-native-reusables/cli@latest init -t plate-calculator
+npx expo start
 ```
 
-## Getting Started
+- **Web:** Drücke `w` im Terminal, um die App im Browser zu öffnen.
+  - Alternativ `localhost:8081` im Browser aufrufen
+- **Mobil:** Scanne den QR-Code mit der **Expo Go** App auf deinem Android- oder iOS-Gerät.
 
-To run the development server:
+## 📖 Bedienung
 
-```bash
-    npm run dev
-    # or
-    yarn dev
-    # or
-    pnpm dev
-    # or
-    bun dev
-```
+1.  **Hanteltyp wählen:** Wechsle zwischen "Männerhantel" (20kg) und "Frauenhantel" (15kg).
+2.  **Gewicht einstellen:** über Buttons, horizontale Wischgesten über die Gewichtsanzeige oder alternativ über das Mausrad.
+3.  **Externes Display:**
+    - Klicke auf das **Monitor-Icon** oben rechts.
+    - Ziehe den neuen Tab auf einen zweiten Bildschirm oder Beamer.
+    - Steuere das Gewicht über den Haupt-Tab – die Anzeige aktualisiert sich synchron.
 
-This will start the Expo Dev Server. Open the app in:
+## 🤝 Mitwirken
 
-- **iOS**: press `i` to launch in the iOS simulator _(Mac only)_
-- **Android**: press `a` to launch in the Android emulator
-- **Web**: press `w` to run in a browser
+Beiträge sind willkommen! Erstelle gerne einen Pull Request.
 
-You can also scan the QR code using the [Expo Go](https://expo.dev/go) app on your device. This project fully supports running in Expo Go for quick testing on physical devices.
+## 📄 Lizenz
 
-## Adding components
-
-You can add more reusable components using the CLI:
-
-```bash
-npx react-native-reusables/cli@latest add [...components]
-```
-
-> e.g. `npx react-native-reusables/cli@latest add input textarea`
-
-If you don't specify any component names, you'll be prompted to select which components to add interactively. Use the `--all` flag to install all available components at once.
-
-## Project Features
-
-- ⚛️ Built with [Expo Router](https://expo.dev/router)
-- 🎨 Styled with [Tailwind CSS](https://tailwindcss.com/) via [Nativewind](https://www.nativewind.dev/)
-- 📦 UI powered by [React Native Reusables](https://github.com/founded-labs/react-native-reusables)
-- 🚀 New Architecture enabled
-- 🔥 Edge to Edge enabled
-- 📱 Runs on iOS, Android, and Web
-
-## Learn More
-
-To dive deeper into the technologies used:
-
-- [React Native Docs](https://reactnative.dev/docs/getting-started)
-- [Expo Docs](https://docs.expo.dev/)
-- [Nativewind Docs](https://www.nativewind.dev/)
-- [React Native Reusables](https://reactnativereusables.com)
-
-## Deploy with EAS
-
-The easiest way to deploy your app is with [Expo Application Services (EAS)](https://expo.dev/eas).
-
-- [EAS Build](https://docs.expo.dev/build/introduction/)
-- [EAS Updates](https://docs.expo.dev/eas-update/introduction/)
-- [EAS Submit](https://docs.expo.dev/submit/introduction/)
-
----
-
-If you enjoy using React Native Reusables, please consider giving it a ⭐ on [GitHub](https://github.com/founded-labs/react-native-reusables). Your support means a lot!
+Dieses Projekt ist Open-Source und unter der [MIT Lizenz](LICENSE) verfügbar.
