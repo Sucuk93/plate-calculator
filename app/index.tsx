@@ -1,10 +1,18 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, ScrollView, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  StatusBar,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import { calculatePlates } from '@/lib/iwf';
 import { PlateVisualizer } from '@/components/PlateVisualizer';
 import { WeightControls } from '@/components/WeightControls';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { Link } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import { usePlateSync } from '@/hooks/usePlateSync';
 import { Icon } from '@/components/ui/icon';
 import { Monitor } from 'lucide-react-native';
@@ -20,78 +28,82 @@ export default function PlateCalculatorScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-black">
-       {/* Set Status Bar Style */}
-       <StatusBar barStyle="dark-content" /> 
-       
-      <ScrollView 
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
-        scrollEnabled={!isSwiping}
-      >
-        <View className="flex-1 items-center pt-6 px-4">
-          
-          {/* Header */}
-          <View className="w-full flex-row justify-between items-start mb-8 px-2">
-            <View>
-              <Text className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-                IWF LOADER
-              </Text>
-              <Text className="text-gray-500 dark:text-gray-400 font-medium">
-                Competition Plate Calculator
-              </Text>
-            </View>
-            <View className="flex-row gap-2">
+      {/* Set Status Bar Style */}
+      <StatusBar barStyle="dark-content" />
+
+      <Stack.Screen
+        options={{
+          title: 'Competition Plate Calculator',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerRight: () => (
+            <View className="flex-row items-center gap-2">
               {/* External Display Button */}
-              <Link href="/display" asChild>
-                <TouchableOpacity className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full">
-                   <Icon as={Monitor} className="text-gray-900 dark:text-white size-6" size={24} />
+              <Link
+                href="/display"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full p-2">
+                <TouchableOpacity className="rounded-full p-2">
+                  <Icon as={Monitor} className="size-5 text-gray-900 dark:text-white" size={20} />
                 </TouchableOpacity>
               </Link>
               <ThemeToggle />
             </View>
-          </View>
+          ),
+        }}
+      />
 
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+        scrollEnabled={!isSwiping}>
+        <View className="flex-1 items-center px-4 pt-6">
           {/* Visualizer Area */}
-          <View className="w-full mb-8">
-             <PlateVisualizer plates={result.plates} hasCollars={result.hasCollars} />
+          <View className="mb-8 w-full">
+            <PlateVisualizer plates={result.plates} hasCollars={result.hasCollars} />
           </View>
 
           {/* Error / Info Message */}
           {!result.isValid && (
-            <View className="bg-red-50 dark:bg-red-900/20 px-4 py-2 rounded-md mb-4">
-               <Text className="text-red-600 dark:text-red-400 font-medium">
-                 {result.error || "Invalid Weight"}
-               </Text>
+            <View className="mb-4 rounded-md bg-red-50 px-4 py-2 dark:bg-red-900/20">
+              <Text className="font-medium text-red-600 dark:text-red-400">
+                {result.error || 'Invalid Weight'}
+              </Text>
             </View>
           )}
-           
-           {/* Remainder Warning (if any floating point issues or un-makeable weights) */}
-           {result.remainder > 0 && (
-             <View className="bg-yellow-50 dark:bg-yellow-900/20 px-4 py-2 rounded-md mb-4">
-               <Text className="text-yellow-600 dark:text-yellow-400 font-medium">
-                 Remainder: {result.remainder}kg (Cannot fill exact weight)
-               </Text>
+
+          {/* Remainder Warning (if any floating point issues or un-makeable weights) */}
+          {result.remainder > 0 && (
+            <View className="mb-4 rounded-md bg-yellow-50 px-4 py-2 dark:bg-yellow-900/20">
+              <Text className="font-medium text-yellow-600 dark:text-yellow-400">
+                Remainder: {result.remainder}kg (Cannot fill exact weight)
+              </Text>
             </View>
-           )}
+          )}
 
           {/* Controls */}
-          <WeightControls 
-            weight={weight} 
-            setWeight={setWeight} 
-            barType={barType} 
+          <WeightControls
+            weight={weight}
+            setWeight={setWeight}
+            barType={barType}
             setBarType={setBarType}
             isSwiping={isSwiping}
             setIsSwiping={setIsSwiping}
           />
-          
-          <View className="mt-10 items-center">
-              <Text className="text-xs text-gray-300 dark:text-gray-700">
-                  Standard IWF Loading Rules Apply
-              </Text>
-              <Text className="text-[10px] text-gray-300 dark:text-gray-700 mt-1">
-                  Collars: Men ≥ 30kg, Women ≥ 25kg
-              </Text>
-          </View>
 
+          <View className="mt-10 items-center">
+            <Text className="text-xs text-gray-300 dark:text-gray-700">
+              Made with ❤️ from{' '}
+              <a href="https://sergiolaubner.de" target="_blank" rel="noopener noreferrer">
+                Sergio
+              </a>
+              .
+            </Text>
+            {/* <Text className="mt-1 text-[10px] text-gray-300 dark:text-gray-700">
+              Collars: Men ≥ 30kg, Women ≥ 25kg
+            </Text> */}
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

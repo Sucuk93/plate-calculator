@@ -173,7 +173,7 @@ export function WeightControls({
             size="icon"
             className="h-12 w-12 rounded-full border-0 bg-gray-200 dark:bg-gray-800"
             onPress={() => handleIncrement(-1)}>
-            <Text className="text-2xl text-gray-600 dark:text-gray-200">-</Text>
+            <Text className="pb-1 text-2xl text-gray-600 dark:text-gray-200">-</Text>
           </Button>
 
           {/* Swipeable Input Area */}
@@ -206,9 +206,9 @@ export function WeightControls({
           <Button
             variant="outline"
             size="icon"
-            className="h-12 w-12 rounded-full border-0 bg-gray-200 dark:bg-gray-800"
+            className="flex h-12 w-12 rounded-full border-0 bg-gray-200 dark:bg-gray-800"
             onPress={() => handleIncrement(1)}>
-            <Text className="text-2xl text-gray-600 dark:text-gray-200">+</Text>
+            <Text className="pb-1 text-2xl text-gray-600 dark:text-gray-200">+</Text>
           </Button>
         </View>
       </View>
@@ -218,32 +218,32 @@ export function WeightControls({
         <Button
           variant="ghost"
           onPress={() => handleDecrement(1)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           -1kg
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleDecrement(2)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           -2kg
         </Button>
 
         <Button
           variant="ghost"
           onPress={() => handleDecrement(5)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           -5kg
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleDecrement(10)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           -10kg
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleDecrement(20)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           -20kg
         </Button>
       </View>
@@ -252,38 +252,38 @@ export function WeightControls({
         <Button
           variant="ghost"
           onPress={() => handleIncrement(1)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           +1kg
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleIncrement(2)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           +2kg
         </Button>
 
         <Button
           variant="ghost"
           onPress={() => handleIncrement(5)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           +5kg
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleIncrement(10)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           +10kg
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleIncrement(20)}
-          className="bg-gray-100 dark:bg-gray-800">
+          className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
           +20kg
         </Button>
       </View>
 
       {/* Mobile "Slider" / Ruler Concept */}
-      <View className="mt-4">
+      {/* <View className="mt-4">
         <Text className="mb-2 text-center text-xs text-gray-400">Quick Select</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-2">
           <View className="flex-row gap-2 px-4">
@@ -315,7 +315,7 @@ export function WeightControls({
             })}
           </View>
         </ScrollView>
-      </View>
+      </View> */}
     </View>
   );
 }
