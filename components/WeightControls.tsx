@@ -1,5 +1,13 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Platform, ScrollView, PanResponder } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+  ScrollView,
+  PanResponder,
+} from 'react-native';
 import { BAR_WEIGHTS } from '@/lib/iwf';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -22,6 +30,13 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
     }
   };
 
+  const handleDecrement = (amount: number) => {
+    const newWeight = weight - amount;
+    if (newWeight >= minWeight) {
+      setWeight(newWeight);
+    }
+  };
+
   const handleBarChange = (type: 'MEN' | 'WOMEN') => {
     setBarType(type);
     // Adjust weight if it falls below new min
@@ -39,29 +54,34 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: (_, gestureState) => {
-        // Only claim if horizontal movement is significant
-        return Math.abs(gestureState.dx) > 10;
+        // Only claim if horizontal movement is significant AND dominant (horizontal > vertical)
+        // This prevents blocking vertical scrolling when the user intends to scroll the page
+        return (
+          Math.abs(gestureState.dx) > 10 && Math.abs(gestureState.dx) > Math.abs(gestureState.dy)
+        );
       },
       onPanResponderGrant: () => {
         setIsSwiping(true);
         startWeightRef.current = weight;
         lastDeltaRef.current = 0;
       },
+      // Rejects termination requests from parent ScrollViews to keep control once dragging starts
+      onPanResponderTerminationRequest: () => false,
       onPanResponderMove: (_, gestureState) => {
         // Sensitivity: 1kg per 20 pixels of drag (Smoother)
         const PIXELS_PER_KG = 20;
         // Use Math.round for symmetric behavior around 0
         const deltaKg = Math.round(gestureState.dx / PIXELS_PER_KG);
-        
+
         // Only update if the integer value changed since last update to avoid spamming state
         if (deltaKg !== lastDeltaRef.current) {
-           let newWeight = startWeightRef.current + deltaKg;
-           
-           // Enforce min weight
-           if (newWeight < minWeight) newWeight = minWeight;
-           
-           setWeight(newWeight);
-           lastDeltaRef.current = deltaKg;
+          let newWeight = startWeightRef.current + deltaKg;
+
+          // Enforce min weight
+          if (newWeight < minWeight) newWeight = minWeight;
+
+          setWeight(newWeight);
+          lastDeltaRef.current = deltaKg;
         }
       },
       onPanResponderRelease: () => {
@@ -74,6 +94,17 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
       },
     })
   ).current;
+
+  const handleWheel = (e: any) => {
+    if (Platform.OS === 'web') {
+      // Simple threshold for wheel events
+      if (e.deltaY < 0) {
+        handleIncrement(1);
+      } else if (e.deltaY > 0) {
+        handleIncrement(-1);
+      }
+    }
+  };
 
   return (
     <View className="w-full max-w-md gap-6 p-4">
@@ -124,13 +155,15 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
           </Button>
 
           {/* Swipeable Input Area */}
-          <View 
-             {...panResponder.panHandlers}
-             className="min-w-[140px] items-center justify-center py-6 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-sm mx-2"
-          >
+          <View
+            {...panResponder.panHandlers}
+            // @ts-ignore
+            onWheel={handleWheel}
+            className="mx-2 min-w-[140px] items-center justify-center rounded-xl bg-gray-100 py-6 shadow-sm dark:bg-gray-800">
             <TextInput
               value={weight.toString()}
-              editable={!isSwiping}
+              // editable={!isSwiping}
+              editable={false}
               onChangeText={(text) => {
                 const val = parseFloat(text);
                 if (!isNaN(val) && val >= minWeight) {
@@ -139,11 +172,11 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
               }}
               keyboardType="numeric"
               className={cn(
-                  "w-full text-center text-5xl font-black text-gray-900 dark:text-white",
-                  isSwiping && "opacity-50"
+                'w-full text-center text-5xl font-black text-gray-900 dark:text-white',
+                isSwiping && 'opacity-50'
               )}
             />
-            <Text className="absolute bottom-1 text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest opacity-80">
+            <Text className="absolute bottom-1 text-[10px] font-bold uppercase tracking-widest text-gray-400 opacity-80 dark:text-gray-500">
               {isSwiping ? 'Adjusting...' : 'Swipe ↔'}
             </Text>
           </View>
@@ -159,6 +192,40 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
       </View>
 
       {/* Quick Add Buttons (Optional enhancement) */}
+      <View className="flex-row justify-center gap-3">
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(1)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -1kg
+        </Button>
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(2)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -2kg
+        </Button>
+
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(5)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -5kg
+        </Button>
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(10)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -10kg
+        </Button>
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(20)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -20kg
+        </Button>
+      </View>
+
       <View className="flex-row justify-center gap-3">
         <Button
           variant="ghost"
