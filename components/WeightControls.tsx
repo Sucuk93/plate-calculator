@@ -29,6 +29,13 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
     }
   };
 
+  const handleDecrement = (amount: number) => {
+    const newWeight = weight - amount;
+    if (newWeight >= minWeight) {
+      setWeight(newWeight);
+    }
+  };
+
   const handleBarChange = (type: 'MEN' | 'WOMEN') => {
     setBarType(type);
     // Adjust weight if it falls below new min
@@ -54,9 +61,10 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
         lastDeltaRef.current = 0;
       },
       onPanResponderMove: (_, gestureState) => {
-        // Sensitivity: 1kg per 10 pixels of drag (Increased sensitivity slightly)
-        const PIXELS_PER_KG = 10;
-        const deltaKg = Math.floor(gestureState.dx / PIXELS_PER_KG);
+        // Sensitivity: 1kg per 20 pixels of drag (Smoother)
+        const PIXELS_PER_KG = 20;
+        // Use Math.round for symmetric behavior around 0
+        const deltaKg = Math.round(gestureState.dx / PIXELS_PER_KG);
 
         // Only update if the integer value changed since last update to avoid spamming state
         if (deltaKg !== lastDeltaRef.current) {
@@ -72,9 +80,11 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
       onPanResponderRelease: () => {
         lastDeltaRef.current = 0;
       },
+      onPanResponderTerminate: () => {
+        lastDeltaRef.current = 0;
+      },
     })
   ).current;
-
   return (
     <View className="w-full max-w-md gap-6 p-4">
       {/* Bar Selector */}
@@ -124,13 +134,15 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
           </Button>
 
           {/* Swipeable Input Area */}
+
           <View
             {...panResponder.panHandlers}
-            className="min-w-[80px] items-center justify-center py-2">
+            className="mx-2 min-w-[140px] items-center justify-center rounded-xl bg-gray-100 py-6 shadow-sm dark:bg-gray-800">
             <TextInput
               value={weight.toString()}
               onChangeText={(text) => {
                 const val = parseFloat(text);
+
                 if (!isNaN(val) && val >= minWeight) {
                   setWeight(val);
                 }
@@ -138,9 +150,11 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
               keyboardType="numeric"
               className="w-full text-center text-5xl font-black text-gray-900 dark:text-white"
               // Consider disabling edit during swipe, but usually fine.
+              // editable={Platform.OS !== 'web' || !panResponder.panHandlers.onResponderMove}
             />
-            <Text className="absolute -bottom-3 text-[10px] font-medium text-gray-400 opacity-60">
-              SWIPE ↔
+
+            <Text className="absolute bottom-1 text-[10px] font-bold uppercase tracking-widest text-gray-400 opacity-80 dark:text-gray-500">
+              Swipe ↔
             </Text>
           </View>
 
@@ -155,7 +169,7 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
       </View>
 
       {/* Quick Add Buttons (Optional enhancement) */}
-      <View className="gap-2perf flex-row justify-center">
+      <View className="flex-row justify-center gap-2">
         <Button
           variant="ghost"
           onPress={() => handleIncrement(1)}
@@ -186,6 +200,40 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
           onPress={() => handleIncrement(20)}
           className="bg-gray-100 dark:bg-gray-800">
           +20kg
+        </Button>
+      </View>
+
+      <View className="flex-row justify-center gap-2">
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(1)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -1kg
+        </Button>
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(2)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -2kg
+        </Button>
+
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(5)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -5kg
+        </Button>
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(10)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -10kg
+        </Button>
+        <Button
+          variant="ghost"
+          onPress={() => handleDecrement(20)}
+          className="bg-gray-100 dark:bg-gray-800">
+          -20kg
         </Button>
       </View>
 

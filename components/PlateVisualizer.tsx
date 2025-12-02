@@ -31,16 +31,16 @@ const DIAMETER_SCALE: Record<string, number> = {
 
 // Thickness (Width in pixels) - Just visual approximations
 const THICKNESS_SCALE: Record<number, number> = {
-  25: 28,
-  20: 24,
-  15: 20,
-  10: 16,
-  5: 14,
-  2.5: 12,
-  2: 10,
-  1.5: 9,
-  1: 8,
-  0.5: 6,
+  25: 42,
+  20: 36,
+  15: 30,
+  10: 24,
+  5: 21,
+  2.5: 18,
+  2: 15,
+  1.5: 14,
+  1: 12,
+  0.5: 9,
 };
 
 export function PlateVisualizer({ plates, hasCollars }: PlateVisualizerProps) {
@@ -52,7 +52,7 @@ export function PlateVisualizer({ plates, hasCollars }: PlateVisualizerProps) {
   const outerPlates = plates.filter((p) => p.weight <= 2);
 
   return (
-    <View className="w-full items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 py-12 dark:border-gray-800 dark:bg-gray-900">
+    <View className="w-full h-[320px] items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
       {/* The Bar/Sleeve */}
       <View className="relative flex-row items-center">
         {/* Sleeve Background Line */}
