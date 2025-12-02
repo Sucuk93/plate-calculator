@@ -1,5 +1,13 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Platform, ScrollView } from 'react-native';
+import React, { useRef } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+  ScrollView,
+  PanResponder,
+} from 'react-native';
 import { BAR_WEIGHTS } from '@/lib/iwf';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -29,6 +37,43 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
       setWeight(newMin);
     }
   };
+
+  // Gesture Handler Logic
+  const startWeightRef = useRef(weight);
+  const lastDeltaRef = useRef(0);
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        // Only claim if horizontal movement is significant
+        return Math.abs(gestureState.dx) > 10;
+      },
+      onPanResponderGrant: () => {
+        startWeightRef.current = weight;
+        lastDeltaRef.current = 0;
+      },
+      onPanResponderMove: (_, gestureState) => {
+        // Sensitivity: 1kg per 10 pixels of drag (Increased sensitivity slightly)
+        const PIXELS_PER_KG = 10;
+        const deltaKg = Math.floor(gestureState.dx / PIXELS_PER_KG);
+
+        // Only update if the integer value changed since last update to avoid spamming state
+        if (deltaKg !== lastDeltaRef.current) {
+          let newWeight = startWeightRef.current + deltaKg;
+
+          // Enforce min weight
+          if (newWeight < minWeight) newWeight = minWeight;
+
+          setWeight(newWeight);
+          lastDeltaRef.current = deltaKg;
+        }
+      },
+      onPanResponderRelease: () => {
+        lastDeltaRef.current = 0;
+      },
+    })
+  ).current;
 
   return (
     <View className="w-full max-w-md gap-6 p-4">
@@ -78,17 +123,26 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
             <Text className="text-2xl text-gray-600 dark:text-gray-200">-</Text>
           </Button>
 
-          <TextInput
-            value={weight.toString()}
-            onChangeText={(text) => {
-              const val = parseFloat(text);
-              if (!isNaN(val) && val >= minWeight) {
-                setWeight(val);
-              }
-            }}
-            keyboardType="numeric"
-            className="min-w-[40px] py-2 text-center text-5xl font-black text-gray-900 dark:text-white"
-          />
+          {/* Swipeable Input Area */}
+          <View
+            {...panResponder.panHandlers}
+            className="min-w-[80px] items-center justify-center py-2">
+            <TextInput
+              value={weight.toString()}
+              onChangeText={(text) => {
+                const val = parseFloat(text);
+                if (!isNaN(val) && val >= minWeight) {
+                  setWeight(val);
+                }
+              }}
+              keyboardType="numeric"
+              className="w-full text-center text-5xl font-black text-gray-900 dark:text-white"
+              // Consider disabling edit during swipe, but usually fine.
+            />
+            <Text className="absolute -bottom-3 text-[10px] font-medium text-gray-400 opacity-60">
+              SWIPE ↔
+            </Text>
+          </View>
 
           <Button
             variant="outline"
@@ -101,7 +155,7 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
       </View>
 
       {/* Quick Add Buttons (Optional enhancement) */}
-      <View className="flex-row justify-center gap-3">
+      <View className="gap-2perf flex-row justify-center">
         <Button
           variant="ghost"
           onPress={() => handleIncrement(1)}
@@ -135,10 +189,7 @@ export function WeightControls({ weight, setWeight, barType, setBarType }: Weigh
         </Button>
       </View>
 
-      {/* Mobile "Slider" / Ruler Concept 
-          Since we can't easily use a native slider without deps, 
-          we'll use a horizontal scroll view with values 
-      */}
+      {/* Mobile "Slider" / Ruler Concept */}
       <View className="mt-4">
         <Text className="mb-2 text-center text-xs text-gray-400">Quick Select</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-2">
