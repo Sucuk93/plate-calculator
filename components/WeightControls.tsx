@@ -51,6 +51,16 @@ export function WeightControls({ weight, setWeight, barType, setBarType, isSwipi
   const startWeightRef = useRef(weight);
   const lastDeltaRef = useRef(0);
 
+  // Refs to hold latest values for PanResponder closure
+  const latestWeightRef = useRef(weight);
+  const latestMinWeightRef = useRef(minWeight);
+  const latestSetWeightRef = useRef(setWeight);
+
+  // Update refs on every render
+  latestWeightRef.current = weight;
+  latestMinWeightRef.current = minWeight;
+  latestSetWeightRef.current = setWeight;
+
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -63,7 +73,8 @@ export function WeightControls({ weight, setWeight, barType, setBarType, isSwipi
       },
       onPanResponderGrant: () => {
         setIsSwiping(true);
-        startWeightRef.current = weight;
+        // Use the latest weight from ref
+        startWeightRef.current = latestWeightRef.current;
         lastDeltaRef.current = 0;
       },
       // Rejects termination requests from parent ScrollViews to keep control once dragging starts
@@ -73,16 +84,19 @@ export function WeightControls({ weight, setWeight, barType, setBarType, isSwipi
         const PIXELS_PER_KG = 20;
         // Use Math.round for symmetric behavior around 0
         const deltaKg = Math.round(gestureState.dx / PIXELS_PER_KG);
-
+        
         // Only update if the integer value changed since last update to avoid spamming state
         if (deltaKg !== lastDeltaRef.current) {
-          let newWeight = startWeightRef.current + deltaKg;
+           let newWeight = startWeightRef.current + deltaKg;
+           
+           const currentMin = latestMinWeightRef.current;
 
-          // Enforce min weight
-          if (newWeight < minWeight) newWeight = minWeight;
-
-          setWeight(newWeight);
-          lastDeltaRef.current = deltaKg;
+           // Enforce min weight
+           if (newWeight < currentMin) newWeight = currentMin;
+           
+           // Use the latest setWeight function
+           latestSetWeightRef.current(newWeight);
+           lastDeltaRef.current = deltaKg;
         }
       },
       onPanResponderRelease: () => {
