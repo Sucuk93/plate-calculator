@@ -3,6 +3,7 @@ import { View, Text, ScrollView, SafeAreaView, StatusBar } from 'react-native';
 import { calculatePlates, BAR_WEIGHTS } from '@/lib/iwf';
 import { PlateVisualizer } from '@/components/PlateVisualizer';
 import { WeightControls } from '@/components/WeightControls';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function PlateCalculatorScreen() {
   const [barType, setBarType] = useState<'MEN' | 'WOMEN'>('MEN');
@@ -21,13 +22,16 @@ export default function PlateCalculatorScreen() {
       <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}>
         <View className="flex-1 items-center px-4 pt-6">
           {/* Header */}
-          <View className="mb-8 items-center">
-            <Text className="text-3xl font-black tracking-tight text-gray-900 dark:text-white">
-              IWF LOADER
-            </Text>
-            <Text className="font-medium text-gray-500 dark:text-gray-400">
-              Competition Plate Calculator
-            </Text>
+          <View className="mb-8 w-full flex-row items-start justify-between px-2">
+            <View>
+              <Text className="text-3xl font-black tracking-tight text-gray-900 dark:text-white">
+                Rechner
+              </Text>
+              <Text className="font-medium text-gray-500 dark:text-gray-400">
+                Wettkampf Hantelbeladung
+              </Text>
+            </View>
+            <ThemeToggle />
           </View>
 
           {/* Visualizer Area */}
@@ -62,12 +66,12 @@ export default function PlateCalculatorScreen() {
           />
 
           {/* <View className="mt-10 items-center">
-              <Text className="text-xs text-gray-300 dark:text-gray-700">
-                  Standard IWF Loading Rules Apply
-              </Text>
-              <Text className="text-[10px] text-gray-300 dark:text-gray-700 mt-1">
-                  Collars: Men ≥ 30kg, Women ≥ 25kg
-              </Text>
+            <Text className="text-xs text-gray-300 dark:text-gray-700">
+              Standard IWF Loading Rules Apply
+            </Text>
+            <Text className="mt-1 text-[10px] text-gray-300 dark:text-gray-700">
+              Collars: Men ≥ 30kg, Women ≥ 25kg
+            </Text>
           </View> */}
         </View>
       </ScrollView>
