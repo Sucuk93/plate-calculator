@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
 import { calculatePlates } from '@/lib/iwf';
 import { PlateVisualizer } from '@/components/PlateVisualizer';
@@ -12,6 +12,7 @@ import { Monitor } from 'lucide-react-native';
 export default function PlateCalculatorScreen() {
   // Use the sync hook to manage state and broadcast changes
   const { weight, setWeight, barType, setBarType } = usePlateSync(25, 'MEN');
+  const [isSwiping, setIsSwiping] = useState(false);
 
   const result = useMemo(() => {
     return calculatePlates(weight, barType);
@@ -22,7 +23,10 @@ export default function PlateCalculatorScreen() {
        {/* Set Status Bar Style */}
        <StatusBar barStyle="dark-content" /> 
        
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}>
+      <ScrollView 
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+        scrollEnabled={!isSwiping}
+      >
         <View className="flex-1 items-center pt-6 px-4">
           
           {/* Header */}
@@ -74,7 +78,9 @@ export default function PlateCalculatorScreen() {
             weight={weight} 
             setWeight={setWeight} 
             barType={barType} 
-            setBarType={setBarType} 
+            setBarType={setBarType}
+            isSwiping={isSwiping}
+            setIsSwiping={setIsSwiping}
           />
           
           <View className="mt-10 items-center">

@@ -17,10 +17,11 @@ interface WeightControlsProps {
   setWeight: (w: number) => void;
   barType: 'MEN' | 'WOMEN';
   setBarType: (t: 'MEN' | 'WOMEN') => void;
+  isSwiping: boolean;
+  setIsSwiping: (v: boolean) => void;
 }
 
-export function WeightControls({ weight, setWeight, barType, setBarType }: WeightControlsProps) {
-  const [isSwiping, setIsSwiping] = useState(false);
+export function WeightControls({ weight, setWeight, barType, setBarType, isSwiping, setIsSwiping }: WeightControlsProps) {
   const minWeight = barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN;
 
   const handleIncrement = (amount: number) => {
