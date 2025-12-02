@@ -3,6 +3,8 @@
 Jeder kennt das nervige Rechnen, wenn man als Scheibenstecker bei einem Wettkampf hilft.
 Als Erleichterung habe ich einen interaktiver Rechner mit **React Native (Expo)** und **NativeWind** entwickelt. Diese Webapp visualisiert die korrekte Beladung der Hantel für ein gewünschtes Zielgewicht und berücksichtigt dabei die allgemein gültigen Wettkampfregeln, einschließlich der Verwendung von Klemmen und Trainingsscheiben.
 
+Den größten Teil der Arbeit hat Gemini übernommen.
+
 ![App Vorschau](./assets/images/example-screenshot.png)
 _Linkes Browserfenster für die Einstellung; Rechtes Browserfenster für die Anzeige auf einem externen Monitor_
 
