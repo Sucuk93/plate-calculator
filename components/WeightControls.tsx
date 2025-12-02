@@ -21,7 +21,14 @@ interface WeightControlsProps {
   setIsSwiping: (v: boolean) => void;
 }
 
-export function WeightControls({ weight, setWeight, barType, setBarType, isSwiping, setIsSwiping }: WeightControlsProps) {
+export function WeightControls({
+  weight,
+  setWeight,
+  barType,
+  setBarType,
+  isSwiping,
+  setIsSwiping,
+}: WeightControlsProps) {
   const minWeight = barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN;
 
   const handleIncrement = (amount: number) => {
@@ -84,19 +91,19 @@ export function WeightControls({ weight, setWeight, barType, setBarType, isSwipi
         const PIXELS_PER_KG = 20;
         // Use Math.round for symmetric behavior around 0
         const deltaKg = Math.round(gestureState.dx / PIXELS_PER_KG);
-        
+
         // Only update if the integer value changed since last update to avoid spamming state
         if (deltaKg !== lastDeltaRef.current) {
-           let newWeight = startWeightRef.current + deltaKg;
-           
-           const currentMin = latestMinWeightRef.current;
+          let newWeight = startWeightRef.current + deltaKg;
 
-           // Enforce min weight
-           if (newWeight < currentMin) newWeight = currentMin;
-           
-           // Use the latest setWeight function
-           latestSetWeightRef.current(newWeight);
-           lastDeltaRef.current = deltaKg;
+          const currentMin = latestMinWeightRef.current;
+
+          // Enforce min weight
+          if (newWeight < currentMin) newWeight = currentMin;
+
+          // Use the latest setWeight function
+          latestSetWeightRef.current(newWeight);
+          lastDeltaRef.current = deltaKg;
         }
       },
       onPanResponderRelease: () => {
@@ -187,7 +194,7 @@ export function WeightControls({ weight, setWeight, barType, setBarType, isSwipi
               }}
               keyboardType="numeric"
               className={cn(
-                'w-full text-center text-5xl font-black text-gray-900 dark:text-white',
+                'w-full cursor-pointer text-center text-5xl font-black text-gray-900 dark:text-white',
                 isSwiping && 'opacity-50'
               )}
             />
