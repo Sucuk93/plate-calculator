@@ -81,9 +81,9 @@ export function PlateVisualizer({ plates, hasCollars }: PlateVisualizerProps) {
       <View className="mt-6 flex-row flex-wrap justify-center gap-2 px-4">
         <Text className="text-sm text-gray-500 dark:text-gray-400">
           {plates.length === 0
-            ? 'Empty Bar'
-            : `Loaded: ${plates.map((p) => p.weight + (p.text ? p.text : '')).join(', ')}`}
-          {hasCollars && ' + Collars'}
+            ? 'Leere Hantel'
+            : `Geladen: ${plates.map((p) => p.weight + (p.text ? p.text : '')).join(', ')}`}
+          {hasCollars && ' + Verschlüsse'}
         </Text>
       </View>
     </View>

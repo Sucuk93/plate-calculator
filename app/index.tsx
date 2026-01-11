@@ -33,7 +33,7 @@ export default function PlateCalculatorScreen() {
 
       <Stack.Screen
         options={{
-          title: 'Competition Plate Calculator',
+          title: 'Wettkampf Hantelrechner',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
@@ -68,7 +68,7 @@ export default function PlateCalculatorScreen() {
           {!result.isValid && (
             <View className="mb-4 rounded-md bg-red-50 px-4 py-2 dark:bg-red-900/20">
               <Text className="font-medium text-red-600 dark:text-red-400">
-                {result.error || 'Invalid Weight'}
+                {result.error || 'Ungültiges Gewicht'}
               </Text>
             </View>
           )}
@@ -77,7 +77,7 @@ export default function PlateCalculatorScreen() {
           {result.remainder > 0 && (
             <View className="mb-4 rounded-md bg-yellow-50 px-4 py-2 dark:bg-yellow-900/20">
               <Text className="font-medium text-yellow-600 dark:text-yellow-400">
-                Remainder: {result.remainder}kg (Cannot fill exact weight)
+                Rest: {result.remainder}kg (Nicht exakt ladbar)
               </Text>
             </View>
           )}
@@ -94,7 +94,7 @@ export default function PlateCalculatorScreen() {
 
           <View className="mt-10 items-center">
             <Text className="text-xs text-gray-300 dark:text-gray-700">
-              Made with ❤️ from{' '}
+              Entwickelt mit ❤️ von{' '}
               <a href="https://sergiolaubner.de" target="_blank" rel="noopener noreferrer">
                 Sergio
               </a>

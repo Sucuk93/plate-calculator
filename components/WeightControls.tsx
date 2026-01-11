@@ -214,7 +214,7 @@ export function WeightControls({
               )}
             />
             <Text className="absolute bottom-1 text-[10px] font-bold uppercase tracking-widest text-gray-400 opacity-80 dark:text-gray-500">
-              {isSwiping ? 'Adjusting...' : 'Swipe ↔'}
+              {isSwiping ? 'Anpassen...' : 'Wischen ↔'}
             </Text>
           </View>
 

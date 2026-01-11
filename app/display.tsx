@@ -15,7 +15,7 @@ export default function DisplayScreen() {
 
   return (
     <View className="flex-1 items-center justify-center bg-white p-8 dark:bg-black">
-      <Stack.Screen options={{ headerShown: false, title: 'External Display' }} />
+      <Stack.Screen options={{ headerShown: false, title: 'Externes Display' }} />
       <StatusBar barStyle="light-content" />
 
       {/* Big Weight Display */}

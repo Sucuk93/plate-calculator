@@ -65,7 +65,7 @@ export function calculatePlates(targetWeight: number, barType: 'MEN' | 'WOMEN'):
       hasCollars: false,
       remainder: 0,
       isValid: false,
-      error: `Maximum weight is ${maxWeight}kg`
+      error: `Maximalgewicht ist ${maxWeight}kg`
     };
   }
   
@@ -81,7 +81,7 @@ export function calculatePlates(targetWeight: number, barType: 'MEN' | 'WOMEN'):
       hasCollars: false,
       remainder: 0,
       isValid: false,
-      error: `Minimum weight is ${minWeight}kg`
+      error: `Minimalgewicht ist ${minWeight}kg`
     };
   }
 
@@ -97,7 +97,7 @@ export function calculatePlates(targetWeight: number, barType: 'MEN' | 'WOMEN'):
       hasCollars: useCollars,
       remainder: 0,
       isValid: false,
-      error: `Weight too low for configuration`
+      error: `Gewicht zu niedrig für Konfiguration`
     };
   }
 
