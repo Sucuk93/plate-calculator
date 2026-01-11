@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 interface PlateVisualizerProps {
   plates: Plate[];
   hasCollars: boolean;
+  barWeight?: number;
 }
 
 // Dimensions relative to view
@@ -43,7 +44,7 @@ const THICKNESS_SCALE: Record<number, number> = {
   0.5: 12,
 };
 
-export function PlateVisualizer({ plates, hasCollars }: PlateVisualizerProps) {
+export function PlateVisualizer({ plates, hasCollars, barWeight }: PlateVisualizerProps) {
   // Sort plates:
   // Inner: Large, Training, or Small >= 2.5
   // Outer: Small <= 2
@@ -54,28 +55,45 @@ export function PlateVisualizer({ plates, hasCollars }: PlateVisualizerProps) {
   return (
     <View className="w-full h-[320px] items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
       {/* The Bar/Sleeve */}
-      <View className="relative flex-row items-center">
-        {/* Sleeve Background Line */}
-        <View className="absolute left-0 right-0 z-0 h-4 rounded-full bg-gray-300 dark:bg-gray-600" />
+      <View className="flex-row items-center justify-center">
+        {/* Bar Shaft (Left side) - Represents the handle */}
+        <View className="relative h-4 w-32 bg-gray-300 dark:bg-zinc-500 items-center justify-center">
+          {/* Knurling visual effect (optional simple gradient/lines or just solid) */}
+          <View className="absolute inset-y-0 right-0 w-full opacity-10 bg-black" /> 
+          {barWeight && (
+            <Text className="text-[9px] font-black text-black/40 dark:text-white/40 uppercase tracking-tighter">
+              {barWeight}kg
+            </Text>
+          )}
+        </View>
 
         {/* Inner Stop (Shoulder) */}
-        <View className="z-10 mr-1 h-16 w-6 rounded-sm bg-gray-400 dark:bg-gray-500" />
+        <View className="z-20 h-16 w-6 rounded-sm bg-gray-400 dark:bg-gray-500 shadow-sm border-l border-white/10" />
 
-        {/* Inner Plates */}
-        {innerPlates.map((plate, index) => (
-          <PlateItem key={`inner-${index}`} plate={plate} />
-        ))}
+        {/* The Sleeve & Plates Area */}
+        <View className="relative flex-row items-center">
+          {/* Sleeve Background Line */}
+          <View className="absolute left-0 right-[-50px] z-0 h-4 rounded-r-full bg-gray-300 dark:bg-gray-600" />
 
-        {/* Collar (Only if hasCollars is true) */}
-        {hasCollars && <CollarItem />}
+          {/* Small spacer between shoulder and first plate */}
+          <View className="w-[2px]" />
 
-        {/* Outer Plates */}
-        {outerPlates.map((plate, index) => (
-          <PlateItem key={`outer-${index}`} plate={plate} />
-        ))}
+          {/* Inner Plates */}
+          {innerPlates.map((plate, index) => (
+            <PlateItem key={`inner-${index}`} plate={plate} />
+          ))}
 
-        {/* End of sleeve cap (optional, just empty space) */}
-        <View className="w-8" />
+          {/* Collar (Only if hasCollars is true) */}
+          {hasCollars && <CollarItem />}
+
+          {/* Outer Plates */}
+          {outerPlates.map((plate, index) => (
+            <PlateItem key={`outer-${index}`} plate={plate} />
+          ))}
+
+          {/* End of sleeve cap (optional, just empty space) */}
+          <View className="w-8" />
+        </View>
       </View>
 
       <View className="mt-10 flex-row flex-wrap justify-center gap-2 px-4">

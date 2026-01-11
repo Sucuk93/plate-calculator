@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, StatusBar } from 'react-native';
-import { calculatePlates } from '@/lib/iwf';
+import { calculatePlates, BAR_WEIGHTS } from '@/lib/iwf';
 import { PlateVisualizer } from '@/components/PlateVisualizer';
 import { usePlateSync } from '@/hooks/usePlateSync';
 import { Stack } from 'expo-router';
@@ -32,7 +32,11 @@ export default function DisplayScreen() {
 
       {/* Visualizer */}
       <View className="w-full max-w-3xl scale-125 transform">
-        <PlateVisualizer plates={result.plates} hasCollars={result.hasCollars} />
+        <PlateVisualizer
+          plates={result.plates}
+          hasCollars={result.hasCollars}
+          barWeight={barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN}
+        />
       </View>
 
       {/* Bar Info */}

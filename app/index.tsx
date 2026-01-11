@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import { calculatePlates } from '@/lib/iwf';
+import { calculatePlates, BAR_WEIGHTS } from '@/lib/iwf';
 import { PlateVisualizer } from '@/components/PlateVisualizer';
 import { WeightControls } from '@/components/WeightControls';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -61,7 +61,11 @@ export default function PlateCalculatorScreen() {
         <View className="flex-1 items-center px-4 pt-6">
           {/* Visualizer Area */}
           <View className="mb-8 w-full">
-            <PlateVisualizer plates={result.plates} hasCollars={result.hasCollars} />
+            <PlateVisualizer
+              plates={result.plates}
+              hasCollars={result.hasCollars}
+              barWeight={barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN}
+            />
           </View>
 
           {/* Error / Info Message */}
