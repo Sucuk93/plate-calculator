@@ -4,6 +4,7 @@ import { calculatePlates } from '@/lib/iwf';
 import { PlateVisualizer } from '@/components/PlateVisualizer';
 import { usePlateSync } from '@/hooks/usePlateSync';
 import { Stack } from 'expo-router';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function DisplayScreen() {
   // Initialize as a receiver
@@ -16,7 +17,12 @@ export default function DisplayScreen() {
   return (
     <View className="flex-1 items-center justify-center bg-white p-8 dark:bg-black">
       <Stack.Screen options={{ headerShown: false, title: 'Externes Display' }} />
-      <StatusBar barStyle="light-content" />
+      <StatusBar barStyle="default" />
+
+      {/* Theme Toggle (Top Right) */}
+      <View className="absolute right-8 top-8 z-50">
+        <ThemeToggle />
+      </View>
 
       {/* Big Weight Display */}
       <Text className="mb-10 text-[120px] font-black leading-tight text-gray-900 dark:text-white">

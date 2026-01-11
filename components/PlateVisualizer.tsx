@@ -31,16 +31,16 @@ const DIAMETER_SCALE: Record<string, number> = {
 
 // Thickness (Width in pixels) - Just visual approximations
 const THICKNESS_SCALE: Record<number, number> = {
-  25: 42,
-  20: 36,
-  15: 30,
-  10: 24,
-  5: 21,
-  2.5: 18,
-  2: 15,
-  1.5: 14,
-  1: 12,
-  0.5: 9,
+  25: 60,
+  20: 50,
+  15: 42,
+  10: 34,
+  5: 28,
+  2.5: 24,
+  2: 20,
+  1.5: 18,
+  1: 15,
+  0.5: 12,
 };
 
 export function PlateVisualizer({ plates, hasCollars }: PlateVisualizerProps) {
@@ -78,8 +78,8 @@ export function PlateVisualizer({ plates, hasCollars }: PlateVisualizerProps) {
         <View className="w-8" />
       </View>
 
-      <View className="mt-6 flex-row flex-wrap justify-center gap-2 px-4">
-        <Text className="text-sm text-gray-500 dark:text-gray-400">
+      <View className="mt-10 flex-row flex-wrap justify-center gap-2 px-4">
+        <Text className="text-xl font-bold text-gray-700 dark:text-gray-200">
           {plates.length === 0
             ? 'Leere Hantel'
             : `Geladen: ${plates.map((p) => p.weight + (p.text ? p.text : '')).join(', ')}`}
@@ -97,9 +97,13 @@ function PlateItem({ plate }: { plate: Plate }) {
   const height = MAX_HEIGHT * heightScale;
   const width = THICKNESS_SCALE[plate.weight] || 10;
 
+  // Use black text for yellow (#F2C94C) and white (#F8F9FA) plates
+  const isLightPlate = plate.color === '#F2C94C' || plate.color === '#F8F9FA';
+  const textColorClass = isLightPlate ? 'text-black' : 'text-white';
+
   return (
     <View
-      className="z-10 mx-[1px] items-center justify-center shadow-sm"
+      className="z-10 mx-[3px] items-center justify-center shadow-sm"
       style={{
         height: height,
         width: width,
@@ -108,22 +112,11 @@ function PlateItem({ plate }: { plate: Plate }) {
         borderWidth: plate.borderColor ? 2 : 0,
         borderRadius: 2,
       }}>
-      {/* Text for Weight or "T" */}
-      {/* If training plate ("T"), always show if possible. Or show weight vertically. */}
-
-      <View
-        style={{
-          transform: [{ rotate: '-90deg' }],
-          width: 100,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        {plate.text ? (
-          <Text className="text-[10px] font-black text-black/50">{plate.text}</Text>
-        ) : width > 10 ? (
-          <Text className="text-[8px] font-bold text-white/90">{plate.weight}</Text>
-        ) : null}
-      </View>
+      {plate.text ? (
+        <Text className={cn('text-xs font-black opacity-70', textColorClass)}>{plate.text}</Text>
+      ) : width > 15 ? (
+        <Text className={cn('text-[12px] font-black', textColorClass)}>{plate.weight}</Text>
+      ) : null}
     </View>
   );
 }
