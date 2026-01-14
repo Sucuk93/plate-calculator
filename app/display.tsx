@@ -30,7 +30,7 @@ export default function DisplayScreen() {
           plates={result.plates}
           hasCollars={result.hasCollars}
           barWeight={barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN}
-          customScale={1.5}
+          customScale={1.8}
         />
       </View>
     </View>
