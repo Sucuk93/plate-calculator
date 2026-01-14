@@ -3,7 +3,7 @@ export const VISUALIZER_CONFIG = {
   baseScale: 1.9,
 
   // Plate Dimensions
-  maxPlateHeight: 280, // Reference height for largest plates (450mm)
+  maxPlateHeight: 300, // Reference height for largest plates (450mm)
 
   // Spacing (in pixels)
   plateGap: 4, // Horizontal space between plates
@@ -22,16 +22,16 @@ export const VISUALIZER_CONFIG = {
 
   // Thickness (Width in pixels) for each weight
   thickness: {
-    25: 84,
-    20: 70,
-    15: 58,
-    10: 48,
-    5: 40,
+    25: 94,
+    20: 80,
+    15: 68,
+    10: 58,
+    5: 50,
     2.5: 34,
-    2: 28,
-    1.5: 25,
-    1: 21,
-    0.5: 17,
+    2: 34,
+    1.5: 34,
+    1: 34,
+    0.5: 34,
   } as Record<number, number>,
 
   // Diameter Scale (Relative to maxPlateHeight 1.0)

@@ -31,23 +31,27 @@ export function PlateVisualizer({
 
   return (
     <View className="w-full flex-1">
-      <View className="relative mt-16 min-h-[300px] w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
+      <View className="relative mt-16 min-h-[300px] w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 pb-12 dark:border-gray-800 dark:bg-gray-900">
         {/* Top Left: Total Weight */}
-        <View className="absolute left-6 top-6 z-30">
-          <Text className="text-7xl font-black leading-none text-gray-900 dark:text-white">
-            {totalWeight}
-            <Text className="text-3xl text-gray-400 dark:text-gray-500">kg</Text>
-          </Text>
-        </View>
-
-        {/* Top Right: Bar Type */}
-        <View className="absolute right-6 top-6 z-30">
-          {barWeight && (
-            <Text className="text-right text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white">
-              {barWeight === 20 ? 'Männerhantel\n(20kg)' : 'Frauenhantel\n(15kg)'}
+        {showPlateList && (
+          <View className="absolute left-6 top-6 z-30">
+            <Text className="text-9xl font-black leading-none text-gray-900 dark:text-white">
+              {totalWeight}
+              <Text className="text-3xl text-gray-400 dark:text-gray-500">kg</Text>
             </Text>
-          )}
-        </View>
+          </View>
+        )}
+
+        {/* Top Left: Total Weight */}
+        {showPlateList && (
+          <View className="absolute right-6 top-6 z-30">
+            {barWeight && (
+              <Text className="text-right text-8xl font-black text-gray-900 dark:text-white">
+                {barWeight === 20 ? 'Männerhantel\n(20kg)' : 'Frauenhantel\n(15kg)'}
+              </Text>
+            )}
+          </View>
+        )}
 
         {/* The Bar/Sleeve */}
         <View className="mt-12 flex-row items-center justify-center">
