@@ -23,9 +23,9 @@ export function PlateVisualizer({ plates, hasCollars, barWeight }: PlateVisualiz
 
   return (
     <View className="w-full flex-1">
-      <View className="relative w-full flex-1 min-h-[300px] items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
+      <View className="relative min-h-[300px] w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
         {/* Top Left: Total Weight */}
-        <View className="absolute top-6 left-6 z-30">
+        <View className="absolute left-6 top-6 z-30">
           <Text className="text-7xl font-black leading-none text-gray-900 dark:text-white">
             {totalWeight}
             <Text className="text-3xl text-gray-400 dark:text-gray-500">kg</Text>
@@ -35,8 +35,8 @@ export function PlateVisualizer({ plates, hasCollars, barWeight }: PlateVisualiz
         {/* Top Right: Bar Type */}
         <View className="absolute top-6 right-6 z-30">
           {barWeight && (
-            <Text className="text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white">
-              {barWeight === 20 ? 'Männerhantel (20kg)' : 'Frauenhantel (15kg)'}
+            <Text className="text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white text-right">
+              {barWeight === 20 ? 'Männerhantel\n(20kg)' : 'Frauenhantel\n(15kg)'}
             </Text>
           )}
         </View>
@@ -96,6 +96,18 @@ export function PlateVisualizer({ plates, hasCollars, barWeight }: PlateVisualiz
             <View className="w-8" />
           </View>
         </View>
+        {/* Bottom Center: Weight List */}
+      </View>
+      <View className="mt-12 w-full px-4">
+        <Text className="text-center text-4xl font-black leading-tight text-gray-900 dark:text-white">
+          {plates.length === 0
+            ? 'Leere Hantel'
+            : [
+                ...innerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
+                ...(hasCollars ? ['Verschlüsse'] : []),
+                ...outerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
+              ].join(', ')}
+        </Text>
       </View>
     </View>
   );
