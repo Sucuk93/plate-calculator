@@ -234,32 +234,32 @@ export function WeightControls({
           variant="ghost"
           onPress={() => handleDecrement(1)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          -1kg
+          <Text className="text-gray-600 dark:text-gray-200">-1kg</Text>
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleDecrement(2)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          -2kg
+          <Text className="text-gray-600 dark:text-gray-200">-2kg</Text>
         </Button>
 
         <Button
           variant="ghost"
           onPress={() => handleDecrement(5)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          -5kg
+          <Text className="text-gray-600 dark:text-gray-200">-5kg</Text>
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleDecrement(10)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          -10kg
+          <Text className="text-gray-600 dark:text-gray-200">-10kg</Text>
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleDecrement(20)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          -20kg
+          <Text className="text-gray-600 dark:text-gray-200">-20kg</Text>
         </Button>
       </View>
 
@@ -268,32 +268,32 @@ export function WeightControls({
           variant="ghost"
           onPress={() => handleIncrement(1)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          +1kg
+          <Text className="text-gray-600 dark:text-gray-200">+1kg</Text>
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleIncrement(2)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          +2kg
+          <Text className="text-gray-600 dark:text-gray-200">+2kg</Text>
         </Button>
 
         <Button
           variant="ghost"
           onPress={() => handleIncrement(5)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          +5kg
+          <Text className="text-gray-600 dark:text-gray-200">+5kg</Text>
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleIncrement(10)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          +10kg
+          <Text className="text-gray-600 dark:text-gray-200">+10kg</Text>
         </Button>
         <Button
           variant="ghost"
           onPress={() => handleIncrement(20)}
           className="bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200">
-          +20kg
+          <Text className="text-gray-600 dark:text-gray-200">+20kg</Text>
         </Button>
       </View>
 
