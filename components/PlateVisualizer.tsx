@@ -18,96 +18,86 @@ export function PlateVisualizer({ plates, hasCollars, barWeight }: PlateVisualiz
   const innerPlates = plates.filter((p) => p.weight >= 2.5);
   const outerPlates = plates.filter((p) => p.weight <= 2);
 
-  const weightText =
-    plates.length === 0
-      ? 'Leere Hantel'
-      : [
-          ...innerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
-          ...(hasCollars ? ['Verschlüsse'] : []),
-          ...outerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
-        ].join(', ');
+  const totalWeight =
+    (barWeight || 0) + plates.reduce((sum, p) => sum + p.weight, 0) * 2 + (hasCollars ? 5 : 0);
 
   return (
-    <>
-      <View className="w-full flex-1">
-        <View className="relative min-h-[300px] w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
-          {/* Top Left: Weight List */}
+    <View className="w-full flex-1">
+      <View className="relative w-full flex-1 min-h-[300px] items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
+        {/* Top Left: Total Weight */}
+        <View className="absolute top-6 left-6 z-30">
+          <Text className="text-7xl font-black leading-none text-gray-900 dark:text-white">
+            {totalWeight}
+            <Text className="text-3xl text-gray-400 dark:text-gray-500">kg</Text>
+          </Text>
+        </View>
 
-          {/* The Bar/Sleeve */}
-          <View className="mt-12 flex-row items-center justify-center">
-            {/* Bar Shaft (Left side) - Represents the handle */}
-            <View
-              className="relative items-center justify-center bg-gray-300 dark:bg-zinc-500"
-              style={{
-                width: VISUALIZER_CONFIG.bar.shaftWidth,
-                height: VISUALIZER_CONFIG.bar.shaftHeight,
-              }}>
-              {/* Knurling visual effect */}
-              <View className="absolute inset-y-0 right-0 w-full bg-black opacity-10" />
-              {barWeight && (
-                <Text className="text-[16px] font-black uppercase tracking-tighter text-black/60 dark:text-white/60">
-                  {barWeight}kg
-                </Text>
-              )}
-            </View>
+        {/* Top Right: Bar Type */}
+        <View className="absolute top-6 right-6 z-30">
+          {barWeight && (
+            <Text className="text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white">
+              {barWeight === 20 ? 'Männerhantel (20kg)' : 'Frauenhantel (15kg)'}
+            </Text>
+          )}
+        </View>
 
-            {/* Inner Stop (Shoulder) */}
+        {/* The Bar/Sleeve */}
+        <View className="mt-12 flex-row items-center justify-center">
+          {/* Bar Shaft (Left side) - Represents the handle */}
+          <View
+            className="relative items-center justify-center bg-gray-300 dark:bg-zinc-500"
+            style={{
+              width: VISUALIZER_CONFIG.bar.shaftWidth,
+              height: VISUALIZER_CONFIG.bar.shaftHeight,
+            }}>
+            {/* Knurling visual effect */}
+            <View className="absolute inset-y-0 right-0 w-full bg-black opacity-10" />
+            {barWeight && (
+              <Text className="text-[16px] font-black uppercase tracking-tighter text-black/60 dark:text-white/60">
+                {barWeight}kg
+              </Text>
+            )}
+          </View>
+
+          {/* Inner Stop (Shoulder) */}
+          <View
+            className="z-20 rounded-sm border-l border-white/10 bg-gray-400 shadow-sm dark:bg-gray-500"
+            style={{
+              width: VISUALIZER_CONFIG.bar.shoulderWidth,
+              height: VISUALIZER_CONFIG.bar.shoulderHeight,
+            }}
+          />
+
+          {/* The Sleeve & Plates Area */}
+          <View className="relative flex-row items-center">
+            {/* Sleeve Background Line */}
             <View
-              className="z-20 rounded-sm border-l border-white/10 bg-gray-400 shadow-sm dark:bg-gray-500"
-              style={{
-                width: VISUALIZER_CONFIG.bar.shoulderWidth,
-                height: VISUALIZER_CONFIG.bar.shoulderHeight,
-              }}
+              className="absolute left-0 right-[-50px] z-0 rounded-r-full bg-gray-300 dark:bg-gray-600"
+              style={{ height: VISUALIZER_CONFIG.bar.sleeveHeight }}
             />
 
-            {/* The Sleeve & Plates Area */}
-            <View className="relative flex-row items-center">
-              {/* Sleeve Background Line */}
-              <View
-                className="absolute left-0 right-[-50px] z-0 rounded-r-full bg-gray-300 dark:bg-gray-600"
-                style={{ height: VISUALIZER_CONFIG.bar.sleeveHeight }}
-              />
+            {/* Small spacer between shoulder and first plate */}
+            <View style={{ width: VISUALIZER_CONFIG.innerSpacer }} />
 
-              {/* Small spacer between shoulder and first plate */}
-              <View style={{ width: VISUALIZER_CONFIG.innerSpacer }} />
+            {/* Inner Plates */}
+            {innerPlates.map((plate, index) => (
+              <PlateItem key={`inner-${index}`} plate={plate} />
+            ))}
 
-              {/* Inner Plates */}
-              {innerPlates.map((plate, index) => (
-                <PlateItem key={`inner-${index}`} plate={plate} />
-              ))}
+            {/* Collar (Only if hasCollars is true) */}
+            {hasCollars && <CollarItem />}
 
-              {/* Collar (Only if hasCollars is true) */}
-              {hasCollars && <CollarItem />}
+            {/* Outer Plates */}
+            {outerPlates.map((plate, index) => (
+              <PlateItem key={`outer-${index}`} plate={plate} />
+            ))}
 
-              {/* Outer Plates */}
-              {outerPlates.map((plate, index) => (
-                <PlateItem key={`outer-${index}`} plate={plate} />
-              ))}
-
-              {/* End of sleeve cap (optional, just empty space) */}
-              <View className="w-8" />
-            </View>
+            {/* End of sleeve cap (optional, just empty space) */}
+            <View className="w-8" />
           </View>
         </View>
       </View>
-      <View className="absolute left-6 top-6 z-30 max-w-[60%]">
-        <Text className="text-4xl font-black leading-tight text-gray-900 dark:text-white">
-          {weightText}
-        </Text>
-      </View>
-      <View className="">
-        {barWeight && (
-          <Text className="text-3xl font-black uppercase tracking-[0.1em] text-gray-900 dark:text-white">
-            {barWeight === 20 ? 'Männerhantel (20kg)' : 'Frauenhantel (15kg)'}
-          </Text>
-        )}
-      </View>
-      <View className="z-30 max-w-[60%]">
-        <Text className="text-4xl font-black leading-tight text-gray-900 dark:text-white">
-          {weightText}
-        </Text>
-      </View>
-    </>
+    </View>
   );
 }
 

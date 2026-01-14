@@ -25,13 +25,13 @@ export default function DisplayScreen() {
       </View>
 
       {/* Big Weight Display */}
-      <Text className="mb-10 text-[180px] font-black leading-tight text-gray-900 dark:text-white">
+      {/* <Text className="mb-10 text-[180px] font-black leading-tight text-gray-900 dark:text-white">
         {weight}
         <Text className="text-5xl text-gray-500">kg</Text>
-      </Text>
+      </Text> */}
 
       {/* Visualizer */}
-      <View className="w-full max-w-3xl scale-125 transform">
+      <View className="h-96 w-full max-w-6xl scale-150 transform">
         <PlateVisualizer
           plates={result.plates}
           hasCollars={result.hasCollars}
