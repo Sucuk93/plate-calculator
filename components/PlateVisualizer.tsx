@@ -9,6 +9,7 @@ interface PlateVisualizerProps {
   hasCollars: boolean;
   barWeight?: number;
   customScale?: number;
+  showPlateList?: boolean;
 }
 
 export function PlateVisualizer({
@@ -16,6 +17,7 @@ export function PlateVisualizer({
   hasCollars,
   barWeight,
   customScale = 1.0,
+  showPlateList = true,
 }: PlateVisualizerProps) {
   // Sort plates:
   // Inner: Large, Training, or Small >= 2.5
@@ -29,7 +31,7 @@ export function PlateVisualizer({
 
   return (
     <View className="w-full flex-1">
-      <View className="relative mt-24 min-h-[300px] w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
+      <View className="relative mt-16 min-h-[300px] w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
         {/* Top Left: Total Weight */}
         <View className="absolute left-6 top-6 z-30">
           <Text className="text-7xl font-black leading-none text-gray-900 dark:text-white">
@@ -106,19 +108,23 @@ export function PlateVisualizer({
         </View>
 
         {/* Bottom Left: Weight List */}
-        <View
-          style={{ bottom: 24 * customScale, left: 24 * customScale }}
-          className="absolute z-30 px-4">
-          <Text className="text-left text-4xl font-black leading-tight text-gray-900 dark:text-white">
-            {plates.length === 0
-              ? 'Leere Hantel'
-              : [
-                  ...innerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
-                  ...(hasCollars ? ['Verschlüsse'] : []),
-                  ...outerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
-                ].join(', ')}
-          </Text>
-        </View>
+        {showPlateList && (
+          <View
+            style={{ bottom: 24 * customScale, left: 24 * customScale }}
+            className="absolute z-30 px-4">
+            <Text
+              style={{ fontSize: 36 * customScale }}
+              className="text-left font-black leading-tight text-gray-900 dark:text-white">
+              {plates.length === 0
+                ? 'Leere Hantel'
+                : [
+                    ...innerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
+                    ...(hasCollars ? ['Verschlüsse'] : []),
+                    ...outerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
+                  ].join(', ')}
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );

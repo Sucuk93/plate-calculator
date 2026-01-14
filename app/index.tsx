@@ -55,13 +55,14 @@ export default function PlateCalculatorScreen() {
         }}
       />
 
-      <View className="flex-1 w-full max-w-7xl mx-auto px-4 pb-4 pt-2 gap-4">
+      <View className="mx-auto w-full max-w-7xl flex-1 gap-4 px-4 pb-4">
         {/* Visualizer Area (Takes remaining space) */}
-        <View className="flex-1 w-full justify-center">
+        <View className="mb-8 w-full flex-1 justify-center">
           <PlateVisualizer
             plates={result.plates}
             hasCollars={result.hasCollars}
             barWeight={barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN}
+            showPlateList={false}
           />
         </View>
 
@@ -86,7 +87,7 @@ export default function PlateCalculatorScreen() {
         </View>
 
         {/* Controls (Fixed at bottom part) */}
-        <View className="items-center w-full">
+        <View className="mt-24 w-full items-center">
           <WeightControls
             weight={weight}
             setWeight={setWeight}
@@ -102,7 +103,7 @@ export default function PlateCalculatorScreen() {
               <a href="https://sergiolaubner.de" target="_blank" rel="noopener noreferrer">
                 Sergio
               </a>
-              .
+              für den SCR Tremonia.
             </Text>
           </View>
         </View>
