@@ -15,7 +15,7 @@ export default function DisplayScreen() {
   }, [weight, barType]);
 
   return (
-    <View className="flex-1 items-center justify-center bg-white p-8 dark:bg-black">
+    <View className="flex-1 items-center justify-center bg-white p-2 dark:bg-black">
       <Stack.Screen options={{ headerShown: false, title: 'Externes Display' }} />
       <StatusBar barStyle="default" />
 
@@ -24,14 +24,8 @@ export default function DisplayScreen() {
         <ThemeToggle />
       </View>
 
-      {/* Big Weight Display */}
-      {/* <Text className="mb-10 text-[180px] font-black leading-tight text-gray-900 dark:text-white">
-        {weight}
-        <Text className="text-5xl text-gray-500">kg</Text>
-      </Text> */}
-
-      {/* Visualizer */}
-      <View className="h-96 w-full max-w-6xl scale-150 transform">
+      {/* Visualizer - Takes all available space */}
+      <View className="w-full flex-1">
         <PlateVisualizer
           plates={result.plates}
           hasCollars={result.hasCollars}

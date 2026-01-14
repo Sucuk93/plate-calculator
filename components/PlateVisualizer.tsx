@@ -23,7 +23,7 @@ export function PlateVisualizer({ plates, hasCollars, barWeight }: PlateVisualiz
 
   return (
     <View className="w-full flex-1">
-      <View className="relative min-h-[300px] w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
+      <View className="relative mt-24 min-h-[300px] w-full flex-1 items-center justify-center overflow-hidden rounded-xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
         {/* Top Left: Total Weight */}
         <View className="absolute left-6 top-6 z-30">
           <Text className="text-7xl font-black leading-none text-gray-900 dark:text-white">
@@ -33,9 +33,9 @@ export function PlateVisualizer({ plates, hasCollars, barWeight }: PlateVisualiz
         </View>
 
         {/* Top Right: Bar Type */}
-        <View className="absolute top-6 right-6 z-30">
+        <View className="absolute right-6 top-6 z-30">
           {barWeight && (
-            <Text className="text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white text-right">
+            <Text className="text-right text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white">
               {barWeight === 20 ? 'Männerhantel\n(20kg)' : 'Frauenhantel\n(15kg)'}
             </Text>
           )}
@@ -97,17 +97,17 @@ export function PlateVisualizer({ plates, hasCollars, barWeight }: PlateVisualiz
           </View>
         </View>
         {/* Bottom Center: Weight List */}
-      </View>
-      <View className="mt-12 w-full px-4">
-        <Text className="text-center text-4xl font-black leading-tight text-gray-900 dark:text-white">
-          {plates.length === 0
-            ? 'Leere Hantel'
-            : [
-                ...innerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
-                ...(hasCollars ? ['Verschlüsse'] : []),
-                ...outerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
-              ].join(', ')}
-        </Text>
+        <View className="absolute bottom-0 left-0 mb-12 w-full px-4">
+          <Text className="text-center text-4xl font-black leading-tight text-gray-900 dark:text-white">
+            {plates.length === 0
+              ? 'Leere Hantel'
+              : [
+                  ...innerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
+                  ...(hasCollars ? ['Verschlüsse'] : []),
+                  ...outerPlates.map((p) => p.weight + (p.text ? p.text : '') + 'kg'),
+                ].join(', ')}
+          </Text>
+        </View>
       </View>
     </View>
   );
