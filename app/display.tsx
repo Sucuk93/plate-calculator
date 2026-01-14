@@ -25,9 +25,9 @@ export default function DisplayScreen() {
       </View>
 
       {/* Big Weight Display */}
-      <Text className="mb-10 text-[120px] font-black leading-tight text-gray-900 dark:text-white">
+      <Text className="mb-10 text-[180px] font-black leading-tight text-gray-900 dark:text-white">
         {weight}
-        <Text className="text-4xl text-gray-500">kg</Text>
+        <Text className="text-5xl text-gray-500">kg</Text>
       </Text>
 
       {/* Visualizer */}
@@ -38,11 +38,6 @@ export default function DisplayScreen() {
           barWeight={barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN}
         />
       </View>
-
-      {/* Bar Info */}
-      <Text className="mt-16 text-2xl font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
-        {barType === 'MEN' ? 'Männerhantel (20kg)' : 'Frauenhantel (15kg)'}
-      </Text>
     </View>
   );
 }

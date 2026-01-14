@@ -55,38 +55,38 @@ export default function PlateCalculatorScreen() {
         }}
       />
 
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
-        scrollEnabled={!isSwiping}>
-        <View className="flex-1 items-center px-4 pt-6">
-          {/* Visualizer Area */}
-          <View className="mb-8 w-full">
-            <PlateVisualizer
-              plates={result.plates}
-              hasCollars={result.hasCollars}
-              barWeight={barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN}
-            />
-          </View>
+      <View className="flex-1 w-full max-w-7xl mx-auto px-4 pb-4 pt-2 gap-4">
+        {/* Visualizer Area (Takes remaining space) */}
+        <View className="flex-1 w-full justify-center">
+          <PlateVisualizer
+            plates={result.plates}
+            hasCollars={result.hasCollars}
+            barWeight={barType === 'MEN' ? BAR_WEIGHTS.MEN : BAR_WEIGHTS.WOMEN}
+          />
+        </View>
 
-          {/* Error / Info Message */}
+        {/* Error / Info Message (Conditional) */}
+        <View>
           {!result.isValid && (
-            <View className="mb-4 rounded-md bg-red-50 px-4 py-2 dark:bg-red-900/20">
-              <Text className="font-medium text-red-600 dark:text-red-400">
+            <View className="mb-2 rounded-md bg-red-50 px-4 py-2 dark:bg-red-900/20">
+              <Text className="text-lg font-bold text-red-600 dark:text-red-400">
                 {result.error || 'Ungültiges Gewicht'}
               </Text>
             </View>
           )}
 
-          {/* Remainder Warning (if any floating point issues or un-makeable weights) */}
+          {/* Remainder Warning */}
           {result.remainder > 0 && (
-            <View className="mb-4 rounded-md bg-yellow-50 px-4 py-2 dark:bg-yellow-900/20">
-              <Text className="font-medium text-yellow-600 dark:text-yellow-400">
+            <View className="mb-2 rounded-md bg-yellow-50 px-4 py-2 dark:bg-yellow-900/20">
+              <Text className="text-lg font-bold text-yellow-600 dark:text-yellow-400">
                 Rest: {result.remainder}kg (Nicht exakt ladbar)
               </Text>
             </View>
           )}
+        </View>
 
-          {/* Controls */}
+        {/* Controls (Fixed at bottom part) */}
+        <View className="items-center w-full">
           <WeightControls
             weight={weight}
             setWeight={setWeight}
@@ -96,7 +96,7 @@ export default function PlateCalculatorScreen() {
             setIsSwiping={setIsSwiping}
           />
 
-          <View className="mt-10 items-center">
+          <View className="mt-4 items-center">
             <Text className="text-xs text-gray-300 dark:text-gray-700">
               Entwickelt mit ❤️ von{' '}
               <a href="https://sergiolaubner.de" target="_blank" rel="noopener noreferrer">
@@ -104,12 +104,9 @@ export default function PlateCalculatorScreen() {
               </a>
               .
             </Text>
-            {/* <Text className="mt-1 text-[10px] text-gray-300 dark:text-gray-700">
-              Collars: Men ≥ 30kg, Women ≥ 25kg
-            </Text> */}
           </View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

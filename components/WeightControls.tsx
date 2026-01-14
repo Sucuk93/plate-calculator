@@ -190,7 +190,7 @@ export function WeightControls({
             {...panResponder.panHandlers}
             // @ts-ignore
             onWheel={handleWheel}
-            className="mx-2 min-w-[140px] items-center justify-center rounded-xl bg-gray-100 py-6 shadow-sm dark:bg-gray-800">
+            className="mx-2 min-w-[180px] items-center justify-center rounded-xl bg-gray-100 py-8 shadow-sm dark:bg-gray-800">
             <TextInput
               value={weight.toString()}
               editable={!isSwiping}
@@ -209,11 +209,11 @@ export function WeightControls({
               }}
               keyboardType="numeric"
               className={cn(
-                'w-full text-center text-5xl font-black text-gray-900 dark:text-white',
+                'w-full text-center text-7xl font-black text-gray-900 dark:text-white',
                 isSwiping && 'opacity-50'
               )}
             />
-            <Text className="absolute bottom-1 text-[10px] font-bold uppercase tracking-widest text-gray-400 opacity-80 dark:text-gray-500">
+            <Text className="absolute bottom-1 text-xs font-bold uppercase tracking-widest text-gray-400 opacity-80 dark:text-gray-500">
               {isSwiping ? 'Anpassen...' : 'Wischen ↔'}
             </Text>
           </View>
